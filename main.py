@@ -1,3 +1,4 @@
+import argparse
 import ipaddress
 import json
 import logging
@@ -9,6 +10,8 @@ import bs4
 import elasticsearch.exceptions
 import requests
 import sentry_sdk
+from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.triggers.cron import CronTrigger
 from elasticsearch import Elasticsearch
 
 ES_HOST = "elasticsearch.uksouth.bink.host"
@@ -154,6 +157,19 @@ def run():
             set_ip_range(es, name, new_range)
         except Exception as err:
             logger.exception(f"Caught exception whilst trying to process ip range for {name}", exc_info=err)
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--now", action="store_true", help="Run job now")
+    args = parser.parse_args()
+
+    if args.now:
+        run()
+    else:
+        scheduler = BlockingScheduler()
+        scheduler.add_job(run, CronTrigger("0 0 * * *"))
+        scheduler.start()
 
 
 if __name__ == "__main__":
