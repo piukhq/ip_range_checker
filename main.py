@@ -168,7 +168,7 @@ def main():
         run()
     else:
         scheduler = BlockingScheduler()
-        scheduler.add_job(run, CronTrigger("0 0 * * *"))
+        scheduler.add_job(run, CronTrigger.from_crontab("0 0 * * *"))
         scheduler.start()
 
 
