@@ -19,7 +19,7 @@ ES_AUTH = ("ip_range_checker", "e9bdd0d1-f2f9-4afe-bb4a-c6ee638bb716")
 
 TEAMS_URL = os.getenv(
     "TEAMS_URL",
-    "https://hellobink.webhook.office.com/webhookb2/bf220ac8-d509-474f-a568-148982784d19@a6e2367a-92ea-4e5a-b565-723830bcc095/IncomingWebhook/eb9eea0af8ec4e0984daa37c6a2ffb85/48aca6b1-4d56-4a15-bc92-8aa9d97300df"
+    "https://hellobink.webhook.office.com/webhookb2/bf220ac8-d509-474f-a568-148982784d19@a6e2367a-92ea-4e5a-b565-723830bcc095/IncomingWebhook/eb9eea0af8ec4e0984daa37c6a2ffb85/48aca6b1-4d56-4a15-bc92-8aa9d97300df"  # noqa: E501
 )
 
 sentry_sdk.init()
