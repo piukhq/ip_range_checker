@@ -1,4 +1,4 @@
-FROM binkhq/python:3.9
+FROM ghcr.io/binkhq/python:3.9
 
 ARG commit
 ENV SENTRY_RELEASE=$commit
