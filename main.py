@@ -87,6 +87,7 @@ def send_to_teams(name: str, text: str):
     }
 
     resp = requests.post(TEAMS_URL, json=payload)
+    logger.info(f"Teams response status code = {resp.status_code}")
     assert resp.status_code == 200
 
 
