@@ -3,7 +3,6 @@ import ipaddress
 import json
 import logging
 import os
-import ssl
 from typing import Callable, Dict, List, Set, Tuple
 
 import bs4
@@ -14,15 +13,12 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 from elasticsearch import Elasticsearch
 
-ES_HOST = "elasticsearch.uksouth.bink.host"
-ES_AUTH = ("ip_range_checker", "e9bdd0d1-f2f9-4afe-bb4a-c6ee638bb716")
-
 TEAMS_URL = os.getenv(
     "TEAMS_URL",
-    "https://hellobink.webhook.office.com/webhookb2/bf220ac8-d509-474f-a568-148982784d19@a6e2367a-92ea-4e5a-b565-723830bcc095/IncomingWebhook/eb9eea0af8ec4e0984daa37c6a2ffb85/48aca6b1-4d56-4a15-bc92-8aa9d97300df"  # noqa: E501
+    "https://hellobink.webhook.office.com/webhookb2/bf220ac8-d509-474f-a568-148982784d19@a6e2367a-92ea-4e5a-b565-723830bcc095/IncomingWebhook/eb9eea0af8ec4e0984daa37c6a2ffb85/48aca6b1-4d56-4a15-bc92-8aa9d97300df",  # noqa: E501
 )
 
-sentry_sdk.init()
+sentry_sdk.init(dsn="https://f902d5041ee947b1b24d75b24d11ad50@sentry.uksouth.bink.sh/24")
 
 logger = logging.getLogger("ip_range_checker")
 handler = logging.StreamHandler()
@@ -139,8 +135,7 @@ RANGES: Dict[str, Callable[[], Set[str]]] = {"Azure": get_azure_ip_ranges, "Spre
 
 
 def run():
-    ssl_ctx = ssl.create_default_context(cafile="ca.pem")
-    es = Elasticsearch([ES_HOST], http_auth=ES_AUTH, scheme="https", port=9200, ssl_context=ssl_ctx)
+    es = Elasticsearch(["127.0.0.1"], scheme="http", port=9200)
 
     for name, func in RANGES.items():
         logger.info(f"Processing IP Range for {name}")
